@@ -12,9 +12,8 @@
 
 # Introduction
 
-Every development team reviews PR to check key attributes to ensure that the PR is adhering to standards. Some of the checks are routine and important. Automating routine checks will improve efficiency and improve quality of builds.
+The PR checker is a tool that automates some of the common checks when reviewing pull requests for Dynamics 365 solutions. Every development team reviews PR to check key attributes to ensure that the PR is adhering to their standards. Automating the PR governance process helps ensure deployment quality without requiring a manual review of basic checks such as solution versions. 
 
-PR checker tool is one such tool which will automate the routine checks and post comments on PR. Validating solution publishers and solution versions are a few automated checks in the tool.
 
 # Components and functionality
 
@@ -22,10 +21,10 @@ PR checker tool is one such tool which will automate the routine checks and post
 
 PR Checker Tool consist of four components:
 
-1.  tool's exe,
-2.  tool's app config,
-3.  pipeline variable group
-4.  command line script.
+1.  Tool's exe,
+2.  Tool's app config,
+3.  Pipeline variable group
+4.  Command line script.
 
 ![FocusCenterPRChecker-CommandLine](Images/FocusCenterPRChecker-CommandLine.png)
 
@@ -41,17 +40,17 @@ The PR checker currently has the following features:
 
 1.  **Check duplicate components**: Checks if a component is present across multiple solutions in the repo. This way a particular component is not customized in multiple solutions by mistake. It will also ensure clear ownership of components in a solution and prevent overwriting of customizations in Test/Prod environments.
 
-2.  **Check duplicate connection references**: Check if any connection references is present across multiple solutions in the repo.
+2.  **Check duplicate connection references**: Check if any connection references is present across multiple solutions in the repo. This prevents confusion on higher environments when the connection reference is setup with an unexpected for one of the solutions using this connection reference.
 
-4.  **Check lastupdated process field**: This is a custom field that needs to contain the flow name in Dataverse Create/Update actions. This check was built when multiple flows were updating the same tables/records and the users/devs having trouble identifying the flow that made the updates.
+4.  **Check lastupdated process field**: This is a custom field that needs to contain the flow name in Dataverse Create/Update actions. This check was built when multiple flows were updating the same tables/records. This allows users to look into the audit history of a record to determine the flows that operated one it.
 
     a.  **Flow auditing attribute**: The name of the attribute which would be traced in all the Dataverse Create/Update actions of flow. This attribute is needed for record auditing purposes in the Environment.
 
-5.  **Check missing connection references**: Checks if any connection references are missing in the solution in the repo but are referenced in flows.
+5.  **Check missing connection references**: Checks if any connection references are missing in the solution in the repo but are referenced in flows. This prevents solution import failures into higher environment when flows refer to a brand-new connection reference that is not part of the solution.
 
-6.  **Check publisher**: This rule ensures publisher values are consistent in the org. The configurable values are provided in solutionpublisherprefix, solutionpublisheruniquename, solutionpublisheroptionvalueprefix variables.
+6.  **Check publisher**: This rule ensures publisher values are consistent in the org. The configurable values are provided in solutionpublisherprefix, solutionpublisheruniquename, solutionpublisheroptionvalueprefix variables. This enforces consistency of solution information across apps in an environment.
 
-7.  **Check security roles**: This rule logs role permissions in the PR as comments in an easy-to-read tabular format.
+7.  **Check security roles**: This rule logs role permissions in the PR as comments in an easy-to-read tabular format. 
 
 9.  **Check solution version**: Check if solution version is incremented compared to the solution version from the master branch.
 
