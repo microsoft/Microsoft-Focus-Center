@@ -70,6 +70,7 @@ The PR checker currently has the following features:
 -   Create/Get personal access token (PAT) which will be used to authenticate into Azure DevOps. For more information, see [Personal access tokens (PAT)](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
 -   URL of organization in Azure DevOps.
 -   For code searches, install **Code Search** **Extension** ([Code Search](https://marketplace.visualstudio.com/items?itemName=ms.vss-code-search)) from Marketplace extension. For more information, see [Functional code search](https://docs.microsoft.com/en-us/azure/devops/project/search/functional-code-search?view=azure-devops).
+
 ![FocusCenterPRChecker-CodeSearchExample](images/FocusCenterPRChecker-CodeSearchExample.png)
 
 # Setup
