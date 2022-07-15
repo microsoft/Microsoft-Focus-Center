@@ -79,9 +79,9 @@ PR Checker Tool is an application, for which the executable can be added to the 
 Below files need to be added in your repository for PR Checker to work (see screenshot below):
 
 -   ExclusionList.xml (DuplicatesComponentTool folder)
--   FocusCenterPRsChecker.exe
--   FocusCenterPRsChecker.exe.config
--   FocusCenterPRsChecker.pdb
+-   FocusCenterPRChecker.exe
+-   FocusCenterPRChecker.exe.config
+-   FocusCenterPRChecker.pdb
 -   Newtonsoft.Json.dll
 
 ![FocusCenterPRChecker-Components](Images/FocusCenterPRChecker-Components.png)
@@ -156,7 +156,7 @@ Post solution import, we must follow steps given below.
 
         Example:
 
-        ```.\\FocusCenterPRsChecker.exe ..\\..\\..\\Extracted \$(PAT-shplat) \$(System.PullRequest.PullRequestId)```
+        ```.\\FocusCenterPRChecker.exe ..\\..\\..\\Extracted \$(PAT-shplat) \$(System.PullRequest.PullRequestId)```
 
     5. Click on *Advanced* and add Path to exe in *Working Directory.*
 
