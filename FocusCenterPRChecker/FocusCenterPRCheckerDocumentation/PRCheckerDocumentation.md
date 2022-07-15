@@ -1,8 +1,4 @@
----
-title: Focus Center PR Checker Tool
----
-
-# Contents {#contents .TOC-Heading}
+# Contents
 
 [Introduction]
 
@@ -72,10 +68,8 @@ The PR checker currently has the following features:
 # Pre-requisites
 
 -   Create/Get personal access token (PAT) which will be used to authenticate into Azure DevOps. For more information, see [Personal access tokens (PAT)](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
-
 -   URL of organization in Azure DevOps.
-
--   For code searches, install **Code Search** **Extension** ([Code Search](https://marketplace.visualstudio.com/items?itemName=ms.vss-code-search)) from Marketplace extension. For more information, see [Functional code search]().
+-   For code searches, install **Code Search** **Extension** ([Code Search](https://marketplace.visualstudio.com/items?itemName=ms.vss-code-search)) from Marketplace extension. For more information, see [Functional code search](https://docs.microsoft.com/en-us/azure/devops/project/search/functional-code-search?view=azure-devops).
 ![FocusCenterPRChecker-CodeSearchExample](images/FocusCenterPRChecker-CodeSearchExample.png)
 
 # Setup
@@ -96,7 +90,7 @@ Below files need to be added in your repository for PR Checker to work (see scre
 
 Post solution import, we must follow steps given below.
 
-1.  ### Create/update pipeline variable group
+1.  #### Create/update pipeline variable group
 
     1.  Sign in to your organization (https://dev.azure.com/{yourorganization}) and select your project.
 
@@ -140,7 +134,7 @@ Post solution import, we must follow steps given below.
 
 ![FocusCenterPRChecker-ErrorExample](images/FocusCenterPRChecker-ErrorExample.png)
 
-2.  ### Configure tool in pipeline
+2.  #### Configure tool in pipeline
 
     1.  Use the variable groups created in *Pre-requisites Section*. Open your pipeline and select **Variables \> Variable groups**, and then choose **Link variable group**. Select the previous created groups.
 
