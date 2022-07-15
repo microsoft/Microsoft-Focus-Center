@@ -27,13 +27,13 @@ PR Checker Tool consist of four components:
 3.  pipeline variable group
 4.  command line script.
 
-![FocusCenterPRChecker-CommandLine](images/FocusCenterPRChecker-CommandLine.png)
+![FocusCenterPRChecker-CommandLine](Images/FocusCenterPRChecker-CommandLine.png)
 
-![FocusCenterPRChecker-VariableGroup](images/FocusCenterPRChecker-VariableGroup.png)
+![FocusCenterPRChecker-VariableGroup](Images/FocusCenterPRChecker-VariableGroup.png)
 
 Users will see review comments from PR checker tool on their respective PRs.
 
-![FocusCenterPRChecker-CommentsExample](images/FocusCenterPRChecker-CommentsExample.png)
+![FocusCenterPRChecker-CommentsExample](Images/FocusCenterPRChecker-CommentsExample.png)
 
 ## Functionality
 
@@ -71,7 +71,7 @@ The PR checker currently has the following features:
 -   URL of organization in Azure DevOps.
 -   For code searches, install **Code Search** **Extension** ([Code Search](https://marketplace.visualstudio.com/items?itemName=ms.vss-code-search)) from Marketplace extension. For more information, see [Functional code search](https://docs.microsoft.com/en-us/azure/devops/project/search/functional-code-search?view=azure-devops).
 
-![FocusCenterPRChecker-CodeSearchExample](images/FocusCenterPRChecker-CodeSearchExample.png)
+![FocusCenterPRChecker-CodeSearchExample](Images/FocusCenterPRChecker-CodeSearchExample.png)
 
 # Setup
 
@@ -85,7 +85,7 @@ Below files need to be added in your repository for PR Checker to work (see scre
 -   FocusCenterPRsChecker.pdb
 -   Newtonsoft.Json.dll
 
-![FocusCenterPRChecker-Components](images/FocusCenterPRChecker-Components.png)
+![FocusCenterPRChecker-Components](Images/FocusCenterPRChecker-Components.png)
 
 # Configuration
 
@@ -123,7 +123,7 @@ Post solution import, we must follow steps given below.
 | solutionpublisheruniquename        | Comma separated string (without space) mentioning all allowed publisher unique prefix.                                                                                                                 | For example: MicrosoftSuccessHub                        |
 | solutionsrepopath                  | Path to solution folders in your repository.                                                                                                                                                           | For example: /Extracted/                                |
 
-> ![FocusCenterPRChecker-Variables](images/FocusCenterPRChecker-Variables.png)
+> ![FocusCenterPRChecker-Variables](Images/FocusCenterPRChecker-Variables.png)
 
 6. Create another variable group say "FocusCenter- PR Tool PAT" and enable "**Link secrets from an Azure key vault**". For more information, see [Link secrets from an Azure key vault].
 
@@ -133,7 +133,7 @@ Post solution import, we must follow steps given below.
 
 *Note: If any of above values are not set then tool will show below error.*
 
-![FocusCenterPRChecker-ErrorExample](images/FocusCenterPRChecker-ErrorExample.png)
+![FocusCenterPRChecker-ErrorExample](Images/FocusCenterPRChecker-ErrorExample.png)
 
 2.  #### Configure tool in pipeline
 
@@ -161,15 +161,15 @@ Post solution import, we must follow steps given below.
 
     5. Click on *Advanced* and add Path to exe in *Working Directory.*
 
-![FocusCenterPRChecker-PipelineTaskExample](images/FocusCenterPRChecker-PipelineTaskExample.png)
+![FocusCenterPRChecker-PipelineTaskExample](Images/FocusCenterPRChecker-PipelineTaskExample.png)
 
 ## View of PR Checker Tool working on pipeline
 
 Below is the view of PR Checker Tool working on pipeline.
 
-![FocusCenterPRChecker-Example1](images/FocusCenterPRChecker-Example1.png)
-![FocusCenterPRChecker-Example2](images/FocusCenterPRChecker-Example2.png)
-![FocusCenterPRChecker-Example3](images/FocusCenterPRChecker-Example3.png)
+![FocusCenterPRChecker-Example1](Images/FocusCenterPRChecker-Example1.png)
+![FocusCenterPRChecker-Example2](Images/FocusCenterPRChecker-Example2.png)
+![FocusCenterPRChecker-Example3](Images/FocusCenterPRChecker-Example3.png)
 
   [Introduction]: #introduction
   [Components and functionality]: #components-and-functionality
