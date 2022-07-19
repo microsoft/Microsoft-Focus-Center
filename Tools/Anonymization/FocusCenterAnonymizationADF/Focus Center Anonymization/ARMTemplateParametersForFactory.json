@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "Focus-Center-Anonymization"
+		},
+		"envServicePrincipalId": {
+			"value": "<Client Id>"
+		},
+		"keyVaultUrl": {
+			"value": "https://<KeyVault Name>.vault.azure.net/"
+		},
+		"keyVaultSecretName": {
+			"value": "<Secret Name>"
+		},
+		"envUrl": {
+			"value": "https://<org>.crm.dynamics.com"
+		},
+		"dataFactory_location": {
+			"value": "westus"
+		},
+		"dataFactory_identity_type": {
+			"value": "SystemAssigned"
+		}
+	}
+}
