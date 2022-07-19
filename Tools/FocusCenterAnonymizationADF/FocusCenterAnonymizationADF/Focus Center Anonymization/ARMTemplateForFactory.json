@@ -1,0 +1,240 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "Focus-Center-Anonymization"
+		},
+		"envServicePrincipalId": {
+			"type": "string",
+			"metadata": "Client Id of application user to access environment",
+			"defaultValue": "<Client Id>"
+		},
+		"keyVaultUrl": {
+			"type": "string",
+			"metadata": "Azure KeyVault Url",
+			"defaultValue": "https://<KeyVault Name>.vault.azure.net/"
+		},
+		"keyVaultSecretName": {
+			"type": "string",
+			"metadata": "Name of secret in the Azure KeyVault that contains App Registration secret",
+			"defaultValue": "<Secret Name>"
+		},
+		"envUrl": {
+			"type": "string",
+			"metadata": "Environment Url",
+			"defaultValue": "https://<org>.crm.dynamics.com"
+		},
+		"dataFactory_location": {
+			"type": "string",
+			"defaultValue": "westus"
+		},
+		"dataFactory_identity_type": {
+			"type": "string",
+			"defaultValue": "SystemAssigned"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Anonymize Contacts')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Anonymize Contacts",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 60,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DynamicsSource",
+								"additionalColumns": [
+									{
+										"name": "AnonymizedFirstName",
+										"value": "ContactFirstName"
+									},
+									{
+										"name": "AnonymizedLastName",
+										"value": "ContactLastName"
+									},
+									{
+										"name": "AnonymizedEmail",
+										"value": "ContactEmail@microsoft.com"
+									}
+								],
+								"query": "<fetch>\n   <entity name=\"contact\">\n      <attribute name=\"contactid\" />\n      <attribute name=\"emailaddress1\" />\n      <attribute name=\"firstname\" />\n      <attribute name=\"lastname\" />\n      <filter type=\"and\">\n         <condition attribute=\"statecode\" operator=\"eq\" value=\"0\" />\n         <condition attribute=\"emailaddress1\" operator=\"ne\" value=\"ContactEmail@microsoft.com\" />\n      </filter>\n      <order attribute=\"emailaddress1\" descending=\"true\" />\n   </entity>\n</fetch>"
+							},
+							"sink": {
+								"type": "DynamicsSink",
+								"writeBatchSize": 100,
+								"writeBehavior": "upsert",
+								"ignoreNullValues": false,
+								"maxConcurrentConnections": 20
+							},
+							"enableStaging": false,
+							"parallelCopies": 10,
+							"enableSkipIncompatibleRow": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "AnonymizedFirstName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "firstname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "AnonymizedLastName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lastname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "AnonymizedEmail",
+											"type": "String"
+										},
+										"sink": {
+											"name": "emailaddress1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "contactid",
+											"type": "Guid"
+										},
+										"sink": {
+											"name": "contactid",
+											"type": "Guid"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "FocusCenter_Contact",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "FocusCenter_Contact",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-07-15T22:24:50Z"
+			},
+			"dependsOn": [
+				"[variables('factoryId')]",
+				"[concat(variables('factoryId'), '/datasets/FocusCenter_Contact')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FocusCenter_Contact')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FocusCenter",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DynamicsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "contact"
+				}
+			},
+			"dependsOn": [
+				"[variables('factoryId')]",
+				"[concat(variables('factoryId'), '/linkedServices/FocusCenter')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FocusCenter')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Dynamics",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "[parameters('envUrl')]",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalId": "[parameters('envServicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('keyVaultSecretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[variables('factoryId')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('keyVaultUrl')]"
+				}
+			},
+			"dependsOn": [
+				"[variables('factoryId')]"
+			]
+		},
+		{
+			"name": "[parameters('factoryName')]",
+			"type": "Microsoft.DataFactory/factories",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": [],
+			"location": "[parameters('dataFactory_location')]",
+			"identity": {
+				"type": "[parameters('dataFactory_identity_type')]"
+			}
+		}
+	]
+}
