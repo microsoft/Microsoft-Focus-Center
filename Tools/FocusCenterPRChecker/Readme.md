@@ -111,7 +111,6 @@ Post solution import, we must follow steps given below.
 | checkmissingconnectionreferences   | Check if any connection references are missing in solution.                                                                                                                                            | true/false                                              |
 | checkpublisher                     | To ensure publisher values are set as values provided in solutionpublisherprefix, solutionpublisheruniquename, solutionpublisheroptionvalueprefix                                                      | true/false                                              |
 | checksecurityroles                 |                                                                                                                                                                                                        | true/false                                              |
-| checksolutiondependencies          | List new dependencies added in the PR/commit on the solutions that exist in the repository.                                                                                                            | true/false                                              |
 | checksolutionversion               | Check if solution version is incremented compared to the solution version from the master branch.                                                                                                      | true/false                                              |
 | enablecommentstopullrequest        | Set this flag true to post comments to PR else comments will be added to only console.                                                                                                                 | true/false                                              |
 | exclusionlistpath                  | String path to the file which contains list of components, entities, folders, file extensions to be excluded.                                                                                          | For example: DuplicatesComponentTool\\ExclusionList.xml |
@@ -124,11 +123,17 @@ Post solution import, we must follow steps given below.
 
 > ![FocusCenterPRChecker-Variables](Images/FocusCenterPRChecker-Variables.png)
 
-6. Create another variable group say "FocusCenter- PR Tool PAT" and enable "**Link secrets from an Azure key vault**". For more information, see [Link secrets from an Azure key vault].
+6. Create another variable group say "FocusCenter- PR Tool PAT" and enable "**Link secrets from an Azure key vault**". For more information, see [Link secrets from an Azure key vault](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml#link-secrets-from-an-azure-key-vault).
 
   |  Variable Name      | Description | Values & Example |
   | ------------------- | ----------- | ---------------- |
   | PAT-shplat          | PAT Token   |                  |
+
+  PAT Token should have at least the permissions below for PR Checker to execute successfully.
+  - Work Items - **Read**
+  - Project and Team - **Read**
+  - Memeber Entitelement Management - **Read**
+  - Code - **Read & Write**
 
 *Note: If any of above values are not set then tool will show below error.*
 
