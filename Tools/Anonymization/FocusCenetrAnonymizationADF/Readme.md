@@ -34,7 +34,7 @@ Focus Center Anonymization ADF consists of:
 
 **Functionality**
 
--   Anonymize entity records fields with static values based on the FecthXML query provided in the source
+-   Anonymize table records fields with static values based on the FecthXML query provided in the source
 
 # Pre-requisites
 
