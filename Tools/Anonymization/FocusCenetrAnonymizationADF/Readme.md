@@ -1,22 +1,18 @@
----
-title: Focus Center Anonymization ADF
----
+# Contents
 
-# Contents {#contents .TOC-Heading}
+[Introduction]
 
-[Introduction 2]
+[Components and Functionality]
 
-[Components and functionality 2]
+[Pre-requisites]
 
-[Pre-requisites 5]
+[Configuration and Setup]
 
-Configuration and [Setup 5]
-
-[Extension 6]
+[Extension]
 
 # Introduction
 
-Focus Center Anonymization ADF is the Azure Data Factory that anonymize (rename/change data into non-identifiable) records for the Dataverse entities.
+Often there is a need to copy Production org into a sandbox org for development purposes. It is recommended that the personal identifiable information is anonymized before the sandbox is used by the developers. The Focus Center Anonymization is a simple Azure Data Factory that anonymizes (rename/change data into non-identifiable) records for the Dataverse tables.
 
 # Components and functionality
 
@@ -24,7 +20,7 @@ Focus Center Anonymization ADF is the Azure Data Factory that anonymize (rename/
 
 Focus Center Anonymization ADF consists of:
 
--   Datasets (Dataverse entities)
+-   Datasets (Dataverse tables)
 
 -   Anonymization pipeline with Copy Data activities to anonymize data
 
@@ -32,21 +28,21 @@ Focus Center Anonymization ADF consists of:
 
 -   Dynamics 365 Linked Service to access Dynamics 365 environment
 
-![Graphical user interface, application Description automatically generated]
+![FocusCenterAnonymizationADF-Components1.png](Images/FocusCenterAnonymizationADF-Components1.png)
 
-![Graphical user interface, application Description automatically generated][1]
+![FocusCenterAnonymizationADF-Components2.png](Images/FocusCenterAnonymizationADF-Components2.png)
 
 **Functionality**
 
--   Anonymize entity records fields with the static values based on the FecthXML query
+-   Anonymize entity records fields with static values based on the FecthXML query provided in the source
 
 # Pre-requisites
 
 -   Azure subscription to deploy Azure Data Factory.
 
--   App Registration (application user) to access Dynamics 365 environment. For more information, see [Create an application user].
+-   App Registration (application user) to access Dynamics 365 environment. For more information, see [Create an application user](https://docs.microsoft.com/en-us/power-platform/admin/manage-application-users#create-an-application-user).
 
--   Azure Key Vault secret to store App Registration secret. For more information, see [Add a secret to Key Vault].
+-   Azure Key Vault secret to store App Registration secret. For more information, see [Add a secret to Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal#add-a-secret-to-key-vault).
 
 -   Basic knowledge of Azure Data Factories to extend/modify by default functionality.
 
@@ -83,67 +79,53 @@ In order to use Focus Center Anonymization ADF the below steps need to be perfor
 4.  Click "Deploy".
 
 5.  Once Data Factory is deployed, you will see below message in Visual Studio output.\
-    ![][2]
+    ![FocusCenterAnonymizationADF-Deployment.png](Images/FocusCenterAnonymizationADF-Deployment.png)
 
 6.  By default, Data Factory does not have access to the Key Vault. Perform the steps below to provide access:
 
     a.  Open Data Factory in the Azure Data Factory studio:\
-        ![A screenshot of a computer Description automatically generated]
+        ![FocusCenterAnonymizationADF-AdfStudio.png](Images/FocusCenterAnonymizationADF-AdfStudio.png)
 
     b.  Navigate to Manage -\> Linked services -\> AzureKeyVault and get Managed identity object ID:\
-        ![Graphical user interface, text, application, email Description automatically generated]
+        ![FocusCenterAnonymizationADF-Deployment2.png](Images/FocusCenterAnonymizationADF-Deployment2.png)
 
     c.  Navigate to your Key Vault -\> Access policies and add new Access policy for ADF with read secrets permission.\
         \
-        ![Graphical user interface, application Description automatically generated][3]
+        ![FocusCenterAnonymizationADF-Deployment3.png](Images/FocusCenterAnonymizationADF-Deployment3.png)
 
 # Extension
 
-By default, Focus Center Anonymization ADF performs anonymization of firstname, lastname and emailaddress1 attributes of Contact entity. Data Factory can be extended to anonymize different attributes/entities. In order to add a new entity to anonymize you can follow the steps below:
+By default, Focus Center Anonymization ADF performs anonymization of firstname, lastname and emailaddress1 attributes of Contact table. Data Factory can be extended to anonymize different attributes/tables. In order to add a new table to anonymize you can follow the steps below:
 
 1.  Open Data Factory in the Azure Data Factory studio.
 
 2.  Navigate to Author -\> Datasets and select "New Dataset".
 
-3.  In the opened pop-up select "Dynamics 365", input you dataset name, select "FocusCenter" for Linked service and select needed entity.\
+3.  In the opened pop-up select "Dynamics 365", input you dataset name, select "FocusCenter" for Linked service and select needed table.\
     \
-    ![Graphical user interface, application, Word Description automatically generated] ![Graphical user interface, text, application, email Description automatically generated][4]
+    ![FocusCenterAnonymizationADF-NewDataset1.png](Images/FocusCenterAnonymizationADF-NewDataset1.png) 
+    ![FocusCenterAnonymizationADF-NewDataset2.png](Images/FocusCenterAnonymizationADF-NewDataset2.png)
 
 4.  Once new Dataset created, navigate to the Pipelines, clone existing pipeline and rename it.
 
 5.  Select Copy Data activity and rename it if needed.
 
 6.  In the Copy Data activity, go to "Source" section, update Source dataset to newly created dataset and update FetchXML query (attributes that you want to anonymize must be present in the FetchXML query).\
-    ![Graphical user interface, text, application Description automatically generated]
+    ![FocusCenterAnonymizationADF-Source.png](Images/FocusCenterAnonymizationADF-Source.png)
 
 7.  Add new values for attributes you want to anonymize as Additional columns in Source section to be used later in the mapping.\
-    ![Graphical user interface, text, application, email Description automatically generated][5]
+    ![FocusCenterAnonymizationADF-Source2.png](Images/FocusCenterAnonymizationADF-Source2.png)
 
 8.  Navigate to "Sink" section in the Copy Data activity and update Sink dataset with newly created dataset.
 
-9.  Navigate to "Mapping" section in the Copy Data activity, click "Import schemas" to load new entity schema and update mapping to map anonymized attributes to entity attributes. **Do not forget to add identifier mapping so that records can be updated based on it.\
-    **\
-    ![Graphical user interface, application Description automatically generated][6]
+9.  Navigate to "Mapping" section in the Copy Data activity, click "Import schemas" to load new table schema and update mapping to map anonymized attributes to table attributes. **Do not forget to add identifier mapping so that records can be updated based on it.**
+    ![FocusCenterAnonymizationADF-Mapping.png](Images/FocusCenterAnonymizationADF-Mapping.png)
 
 10. Publish Data Factory.\
-    ![][7]
+    ![FocusCenterAnonymizationADF-Publish.png](Images/FocusCenterAnonymizationADF-Publish.png)
 
-  [Introduction 2]: #introduction
-  [Components and functionality 2]: #_Toc89418494
-  [Pre-requisites 5]: #pre-requisites
-  [Setup 5]: #_Toc89418496
-  [Extension 6]: #_Toc89418497
-  [Graphical user interface, application Description automatically generated]: media/image1.png {width="6.5in" height="2.797222222222222in"}
-  [1]: media/image2.png {width="6.5in" height="2.05625in"}
-  [Create an application user]: https://docs.microsoft.com/en-us/power-platform/admin/manage-application-users#create-an-application-user
-  [Add a secret to Key Vault]: https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal#add-a-secret-to-key-vault
-  [2]: media/image3.png {width="6.5in" height="0.24305555555555555in"}
-  [A screenshot of a computer Description automatically generated]: media/image4.png {width="5.831746500437445in" height="2.214319772528434in"}
-  [Graphical user interface, text, application, email Description automatically generated]: media/image5.png {width="5.7369149168853895in" height="2.458415354330709in"}
-  [3]: media/image6.png {width="5.666189851268592in" height="2.236207349081365in"}
-  [Graphical user interface, application, Word Description automatically generated]: media/image7.png {width="2.2588331146106735in" height="3.1145833333333335in"}
-  [4]: media/image8.png {width="2.6584700349956254in" height="3.1288123359580053in"}
-  [Graphical user interface, text, application Description automatically generated]: media/image9.png {width="6.5in" height="2.8958333333333335in"}
-  [5]: media/image10.png {width="6.5in" height="2.792361111111111in"}
-  [6]: media/image11.png {width="6.5in" height="2.5368055555555555in"}
-  [7]: media/image12.png {width="6.5in" height="2.7875in"}
+  [Introduction]: #introduction
+  [Components and functionality]: #components-and-functionality
+  [Pre-requisites]: #pre-requisites
+  [Configuration and Setup]: #configuration-and-setup
+  [Extension]: #extension
