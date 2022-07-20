@@ -132,7 +132,7 @@ Post solution import, we must follow steps given below.
   PAT Token should have at least the permissions below for PR Checker to execute successfully.
   - Work Items - **Read**
   - Project and Team - **Read**
-  - Memeber Entitelement Management - **Read**
+  - Member Entitlement Management - **Read**
   - Code - **Read & Write**
 
 *Note: If any of above values are not set then tool will show below error.*
