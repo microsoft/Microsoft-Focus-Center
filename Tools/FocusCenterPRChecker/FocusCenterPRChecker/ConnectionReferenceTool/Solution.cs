@@ -122,6 +122,12 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
                 string masterSolutionUrl = $"{ConfigManager.AzureDevOpsRepositoryUrl}/items?path={ConfigManager.SolutionsRepoPath}{solutionPath.Split('\\').LastOrDefault()}/Other/Solution.xml&api-version=6.0";
 
                 string masterSolutionFileContent = await HttpManager.SendGetRequest(masterSolutionUrl, "text/plain");
+
+                if (masterSolutionFileContent == null)
+                {
+                    return "";
+                }
+
                 var oldVersionString = XDocument.Parse(masterSolutionFileContent).Root.Descendants("Version").FirstOrDefault().Value;
 
                 var newVersion = Version.Parse(newVersionString);
