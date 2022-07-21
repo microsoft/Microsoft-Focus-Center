@@ -1,4 +1,7 @@
-﻿namespace FocusCenterPRChecker.ConnectionReferenceTool
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.using System;
+
+namespace FocusCenterPRChecker.ConnectionReferenceTool
 {
     enum WorkflowCategory
     {

@@ -1,4 +1,7 @@
-﻿namespace FocusCenterPRChecker.ConnectionReferenceTool.Models
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.using System;
+
+namespace FocusCenterPRChecker.ConnectionReferenceTool.Models
 {
     public class FlowModel
     {

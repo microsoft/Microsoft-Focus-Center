@@ -1,4 +1,7 @@
-﻿namespace FocusCenterPRChecker.CheckPermissionsOfRole.Models
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.using System;
+
+namespace FocusCenterPRChecker.CheckPermissionsOfRole.Models
 {
     public class EntityTableModel
     {

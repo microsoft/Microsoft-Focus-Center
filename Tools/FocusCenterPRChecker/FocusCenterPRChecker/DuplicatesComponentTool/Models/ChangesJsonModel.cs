@@ -1,4 +1,7 @@
-﻿namespace FocusCenterPRChecker.DuplicatesComponentTool.Models
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.using System;
+
+namespace FocusCenterPRChecker.DuplicatesComponentTool.Models
 {
     public class ChangesJsonModel
     {

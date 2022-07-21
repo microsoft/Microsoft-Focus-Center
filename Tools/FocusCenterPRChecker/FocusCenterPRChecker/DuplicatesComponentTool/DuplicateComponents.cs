@@ -1,4 +1,7 @@
-﻿using FocusCenterPRChecker.Managers;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.using System;
+
+using FocusCenterPRChecker.Managers;
 using FocusCenterPRChecker.Models;
 using Newtonsoft.Json;
 using System;

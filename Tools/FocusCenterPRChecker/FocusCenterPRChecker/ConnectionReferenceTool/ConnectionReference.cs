@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.using System;
+
+using System.Collections.Generic;
 using FocusCenterPRChecker.ConnectionReferenceTool.Models;
 
 namespace FocusCenterPRChecker.ConnectionReferenceTool
