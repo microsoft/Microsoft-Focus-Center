@@ -8,7 +8,7 @@
 		"factoryName": {
 			"type": "string",
 			"metadata": "Data Factory name",
-			"defaultValue": "Focus-Center-Anonymization-Dev-Comments"
+			"defaultValue": "Focus-Center-Anonymization"
 		},
 		"envServicePrincipalId": {
 			"type": "string",
