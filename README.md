@@ -1,14 +1,13 @@
-# Project
+# Microsoft Focus Center
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This project contains community solutions and tools available for fusion teams to use in order to help accelerate solution lifecycle management in Microsoft Power Platform. Although the underlying features and components used to build these are fully supported, the solutions and tools included are sample implementations.  
 
-As the maintainer of this project, please make a few updates:
+If you encounter issues using the solutions and tools, please report issues. We will provide updates including bug fixes regularly and encourage community PRs for issues and enhancements as well. 
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+Our customers and community can use and customize these to implement in their organizations by forking the repository; however, please note that we are unable to provide support and bug fixes to forked repositories.
+
+Important:
+Microsoft Support will not be able to help with issues related to these solutions and tools. For issues with core features in Microsoft Power Platform, use standard channel to contact Microsoft Support.
 
 ## Contributing
 
