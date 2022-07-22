@@ -6,7 +6,7 @@ If you encounter issues using the solutions and tools, please report issues. We 
 
 Our customers and community can use and customize these to implement in their organizations by forking the repository; however, please note that we are unable to provide support and bug fixes to forked repositories.
 
-Important:
+**Important**:
 Microsoft Support will not be able to help with issues related to these solutions and tools. For issues with core features in Microsoft Power Platform, use standard channel to contact Microsoft Support.
 
 ## Contributing
