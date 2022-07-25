@@ -74,13 +74,15 @@ The PR checker currently has the following features:
 
 # Setup
 
-PR Checker Tool is an application, for which the executable can be added to the repository and configured as mentioned in the sections below. To generate the executables, clone the repo and build the FocusCenterPRChecker project. The following files will be generated in the bin folder. They need to be added to your repository for PR Checker to work (see screenshot below):
+PR Checker Tool is an application, for which the executable can be added to the repository and configured as mentioned in the sections below. To generate the executables, clone the repo and build the FocusCenterPRChecker project. The following files will be generated in the project's bin folder. 
 
 -   ExclusionList.xml (DuplicatesComponentTool folder)
 -   FocusCenterPRChecker.exe
 -   FocusCenterPRChecker.exe.config
 -   FocusCenterPRChecker.pdb
 -   Newtonsoft.Json.dll
+
+They need to be added to your repository for PR Checker to work (see screenshot below):
 
 ![FocusCenterPRChecker-Components](Images/FocusCenterPRChecker-Components.png)
 
