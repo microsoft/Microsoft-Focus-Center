@@ -1,4 +1,7 @@
-﻿namespace FocusCenterPRChecker.Models
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace FocusCenterPRChecker.Models
 {
     public class CommentJsonModel
     {

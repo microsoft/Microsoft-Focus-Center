@@ -1,4 +1,7 @@
-﻿namespace FocusCenterPRChecker.DuplicatesComponentTool.Models
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace FocusCenterPRChecker.DuplicatesComponentTool.Models
 {
     public class ComponentModel
     {

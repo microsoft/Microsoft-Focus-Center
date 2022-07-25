@@ -1,4 +1,7 @@
-﻿using FocusCenterPRChecker.Managers;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using FocusCenterPRChecker.Managers;
 
 namespace FocusCenterPRChecker.Helpers
 {

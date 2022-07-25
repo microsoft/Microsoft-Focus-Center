@@ -1,4 +1,7 @@
-﻿using FocusCenterPRChecker.Models;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using FocusCenterPRChecker.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
