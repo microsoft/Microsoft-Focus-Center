@@ -1,5 +1,5 @@
 # Copyright (c) Microsoft Corporation.
-# Licensed under the MIT license.using System;
+# Licensed under the MIT license.
 
 
 #Requires -Version 3.0
