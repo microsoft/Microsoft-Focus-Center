@@ -1,0 +1,15 @@
+{
+  "version": "2.0",
+  "functionTimeout": "-1",
+  "logging": {
+    "logLevel": {
+      "AnonymizationFunctionApp": "Information"
+    },
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      }
+    }
+  }
+}
