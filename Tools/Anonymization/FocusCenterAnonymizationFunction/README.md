@@ -22,7 +22,7 @@ Focus Center Anonymization Function is an AnonymizationFunctionApp Function App 
 
 **Functionality**
 
--   Anonymize table records fields with static/dynamics values provided based on the FecthXML query provided in the configuration JSON
+-   Anonymize table records fields with static/dynamics values provided based on the FetchXML query provided in the configuration JSON
 
 # Pre-requisites
 
