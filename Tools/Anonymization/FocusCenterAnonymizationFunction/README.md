@@ -18,7 +18,7 @@ Often there is a need to copy Production org into a sandbox org for development 
 
 **Components**
 
-Focus Center Anonymization Function is an AnonymizationFunctionApp Function App that has one function in it - AnonymizationFunction.
+-   Focus Center Anonymization Function is an AnonymizationFunctionApp Function App that has one function in it - AnonymizationFunction.
 
 **Functionality**
 
@@ -42,7 +42,7 @@ In order to use Focus Center Anonymization Function the below steps need to be p
 
   | Application Setting        | Description                                  |
   | ---------------------------| -------------------------------------------- |
-  | CrmUrl                     | Provide organization URL. (ex: https://scsdevhubenv2.crm.dynamics.com) |
+  | CrmUrl                     | Provide organization URL. (ex: https://<yourORG>.crm.dynamics.com) |
   | CrmAppClientId             | Provide Client ID of the application user which is created during pre-requisite steps |
   | CrmAppClientSecret         | Provide Azure Key Value secret URL, where App Registration (application user) secret is stored. |
   | CrmMaxParallelConnections  | Provide a number of parallel connections to the Dataverse. |
