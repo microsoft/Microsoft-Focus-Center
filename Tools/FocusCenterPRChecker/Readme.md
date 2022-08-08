@@ -123,7 +123,7 @@ Post solution import, we must follow steps given below.
 
 > ![FocusCenterPRChecker-Variables](Images/FocusCenterPRChecker-Variables.png)
 
-6. Create another variable group say "FocusCenter- PR Tool PAT" and enable "**Link secrets from an Azure key vault**". For more information, see [Link secrets from an Azure key vault](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml#link-secrets-from-an-azure-key-vault). Storing PAT token in the Key Vault is recommended, but not reqired. You can use secured variable in variable group as an alternative.
+6. Create another variable group say "FocusCenter- PR Tool PAT" and enable "**Link secrets from an Azure key vault**". For more information, see [Link secrets from an Azure key vault](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml#link-secrets-from-an-azure-key-vault). Storing PAT token in the Key Vault is recommended, but not required. You can use secured variable in variable group as an alternative.
 
   |  Variable Name      | Description | Values & Example |
   | ------------------- | ----------- | ---------------- |
