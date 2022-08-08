@@ -68,7 +68,7 @@ The PR checker currently has the following features:
 
 -   Create/Get personal access token (PAT) which will be used to authenticate into Azure DevOps. For more information, see [Personal access tokens (PAT)](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
 -   URL of organization in Azure DevOps.
--   For code searches, install **Code Search** **Extension** ([Code Search](https://marketplace.visualstudio.com/items?itemName=ms.vss-code-search)) from Marketplace extension. For more information, see [Functional code search](https://docs.microsoft.com/en-us/azure/devops/project/search/functional-code-search?view=azure-devops).
+-   For code searches that are invoked in PR checker, install **Code Search** **Extension** ([Code Search](https://marketplace.visualstudio.com/items?itemName=ms.vss-code-search)) from Marketplace extension. It is required for the PR checker to be executed without exceptions. For more information, see [Functional code search](https://docs.microsoft.com/en-us/azure/devops/project/search/functional-code-search?view=azure-devops).
 
 ![FocusCenterPRChecker-CodeSearchExample](Images/FocusCenterPRChecker-CodeSearchExample.png)
 
@@ -123,7 +123,7 @@ Post solution import, we must follow steps given below.
 
 > ![FocusCenterPRChecker-Variables](Images/FocusCenterPRChecker-Variables.png)
 
-6. Create another variable group say "FocusCenter- PR Tool PAT" and enable "**Link secrets from an Azure key vault**". For more information, see [Link secrets from an Azure key vault](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml#link-secrets-from-an-azure-key-vault).
+6. Create another variable group say "FocusCenter- PR Tool PAT" and enable "**Link secrets from an Azure key vault**". For more information, see [Link secrets from an Azure key vault](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml#link-secrets-from-an-azure-key-vault). Storing PAT token in the Key Vault is recommended, but not reqired. You can use secured variable in variable group as an alternative.
 
   |  Variable Name      | Description | Values & Example |
   | ------------------- | ----------- | ---------------- |
@@ -148,6 +148,8 @@ Post solution import, we must follow steps given below.
     3.  Add *Display name.*
 
     4.  In the *Script* section, add:
+    
+        ```.\\FocusCenterPRChecker.exe ..\..\..\Extracted $(PAT-shplat) $(System.PullRequest.PullRequestId)```
 
         a.  Exe name
 
@@ -155,13 +157,9 @@ Post solution import, we must follow steps given below.
 
         c.  PAT variable name from pipeline variables
 
-        d.  PullRequestId from system variables.
+        d.  PullRequestId from internal system variables that are available in each pipeline.
 
         *Note: Add the above values separated by space.*
-
-        Example:
-
-        ```.\\FocusCenterPRChecker.exe ..\\..\\..\\Extracted \$(PAT-shplat) \$(System.PullRequest.PullRequestId)```
 
     5. Click on *Advanced* and add Path to exe in *Working Directory.*
 
