@@ -165,17 +165,17 @@ Please find performance consideration below.
 
 1)  Azure function performance depends on your App Service plan. If you need to anonymize large amounts of data and hit memory limit in Azure Function (notification banner will appear in Azure Portal if this happens), you need to scale up App Service plan.
 
-2)  CRMMaxParellalConnection and CrmMaxRequestsCountInBulk application settings should be tried out with a couple of combinations to get the best performance out of the environment.
+2)  CRMMaxParellelConnection and CrmMaxRequestsCountInBulk application settings should be tried out with a couple of combinations to get the best performance out of the environment.
 
-3)  Please ensure that no other jobs/flows/etc. are running with the same account to avoid Dataverse throttling that can affect Azure Function performance.
+3)  Please ensure that no other jobs/flows/etc. are running with the same account to avoid Dataverse throttling that can affect the Azure Function performance.
 
-4)  If you notice that function hangs (does not complete with failed/succeeded status and not updating any records for some time), then there is high likelihood that API calls to the Dataverse have been throttled for this user. To understand more about api limits look into [this link](https://docs.microsoft.com/en-us/power-apps/developer/data-platform/api-limits).
+4)  If you notice that function hangs (does not complete with failed/succeeded status and not updating any records for some time), then there is high likelihood that API calls to the Dataverse have been throttled for this user. To understand more about API limits look into [this link](https://docs.microsoft.com/en-us/power-apps/developer/data-platform/api-limits).
 
 5)  Parallelism may begin with 5 threads and can be scaled up/down based on the function performance.
 
 6)  Small batch sizes are recommended. Batch size may begin with 200 and can be scaled up/down based on the function performance.
 
-7)  Performance can be impacted by the number of synchronous components configured on the target entity.
+7)  Performance can be impacted by the number of synchronous components configured on the target entity (e.g. plugins).
 
   [Introduction]: #introduction
   [Components and functionality]: #components-and-functionality
