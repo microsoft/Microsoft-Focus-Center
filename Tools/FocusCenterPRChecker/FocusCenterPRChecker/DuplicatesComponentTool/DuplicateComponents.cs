@@ -97,7 +97,15 @@ namespace FocusCenterPRChecker.DuplicatesComponentTool
         // Get component folder from the path
         public static string GetComponentFolder(string path)
         {
-            Regex regex = new Regex($@"^\/{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}[^\/]*\/[^\/]*\/(?<type>[^\/]*)");
+            var numberOfSubFolders = ConfigManager.SolutionFilesPath.Split('\\').Length - 1;
+            var regexBase = $@"^\/{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}[^\/]*\/[^\/]*\/";
+
+            for (int i = 0; i < numberOfSubFolders; i++)
+            {
+                regexBase += $@"[^\/]*\/";
+            }
+
+            Regex regex = new Regex($@"{regexBase}(?<type>[^\/]*)");
 
             if (!regex.IsMatch(path)) return "";
 
@@ -116,7 +124,15 @@ namespace FocusCenterPRChecker.DuplicatesComponentTool
         // Get extity.xml component folder from given path
         private static string ParseEntitiesPath(string path)
         {
-            Regex regex = new Regex($@"^\/{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}[^\/]*\/[^\/]*\/[^\/]*\/[^\/]*\/(?<type>[^\/]*)");
+            var numberOfSubFolders = ConfigManager.SolutionFilesPath.Split('\\').Length - 1;
+            var regexBase = $@"^\/{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}[^\/]*\/[^\/]*\/[^\/]*\/[^\/]*\/";
+
+            for (int i = 0; i < numberOfSubFolders; i++)
+            {
+                regexBase += $@"[^\/]*\/";
+            }
+
+            Regex regex = new Regex($@"{regexBase}(?<type>[^\/]*)");
 
             if (!regex.IsMatch(path)) return "";
 
