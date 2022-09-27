@@ -203,12 +203,14 @@ namespace FocusCenterPRChecker
 
             var changesJson = JsonConvert.DeserializeObject<ChangesJsonModel>(await HttpManager.SendGetRequest($"{ConfigManager.AzureDevOpsRepositoryUrl}/commits/{commitId}/changes"));
 
+            var foldersToSolution = ConfigManager.SolutionsRepoPath.Split('/').Length - 2;
+
             var fileNames = changesJson.Changes
                 .Where(i => i.Item.GitObjectType == "blob" && !i.ChangeType.Contains("delete"))
                 .Select(i => new ComponentModel()
                 {
                     ComponentName = i.Item.Path.Split('/').LastOrDefault(),
-                    Path = String.Join("/", i.Item.Path.Split('/').Where(x => x != i.Item.Path.Split('/')[1]).ToArray()),
+                    Path = String.Join("/", i.Item.Path.Split('/').Where(x => x != i.Item.Path.Split('/')[foldersToSolution]).ToArray()),
                     SolutionName = Solution.GetSolutionName(i.Item.Path),
                     ComponentFolder = DuplicateComponents.GetComponentFolder(i.Item.Path),
                     IsNewComponent = i.ChangeType.ToLower().Contains("add")

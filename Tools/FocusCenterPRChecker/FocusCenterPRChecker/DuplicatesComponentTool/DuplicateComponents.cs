@@ -51,6 +51,7 @@ namespace FocusCenterPRChecker.DuplicatesComponentTool
         // Post request to Azure DevOps Search api to get code result containing information of the searched files and its metadata
         private static async Task<SearchResponseModel> SearchADO(string searchString)
         {
+            var path = ConfigManager.PathToRepository.Split('\\').LastOrDefault() != String.Empty ? ConfigManager.PathToRepository.Split('\\').LastOrDefault() : "/";
             var json = $@"{{
                               'searchText': '{searchString}',
                               '$skip': 0,
@@ -58,7 +59,7 @@ namespace FocusCenterPRChecker.DuplicatesComponentTool
                               'filters': {{
                                         'Project': ['{ConfigManager.ProjectName}'],                     
                                         'Repository': ['{ConfigManager.RepositoryName}'],
-                                        'Path': ['{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}'],
+                                        'Path': ['{path}'],
                                         'Branch': ['{ConfigManager.BranchName.Split('/').LastOrDefault()}']
                                         }},
                               '$orderBy': [
@@ -98,7 +99,14 @@ namespace FocusCenterPRChecker.DuplicatesComponentTool
         public static string GetComponentFolder(string path)
         {
             var numberOfSubFolders = ConfigManager.SolutionFilesPath.Split('\\').Length - 1;
-            var regexBase = $@"^\/{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}[^\/]*\/[^\/]*\/";
+            var foldersToSolution = ConfigManager.SolutionsRepoPath.Split('/').Length - 2;
+
+            var regexBase = $@"^\/{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}[^\/]*\/";
+
+            for (int i = 0; i < foldersToSolution; i++)
+            {
+                regexBase += @"[^\/]*\/";
+            }
 
             for (int i = 0; i < numberOfSubFolders; i++)
             {

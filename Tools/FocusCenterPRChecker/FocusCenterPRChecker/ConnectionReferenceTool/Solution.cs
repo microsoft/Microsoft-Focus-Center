@@ -101,7 +101,15 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
         // Extract solution name from the path
         public static string GetSolutionName(string path)
         {
-            Regex regex = new Regex($@"^\/{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}[^\/]*\/([^\/]*)");
+            var foldersToSolution = ConfigManager.SolutionsRepoPath.Split('/').Length - 2;
+            var regexBase = $@"^\/{ConfigManager.PathToRepository.Split('\\').LastOrDefault()}";
+
+            for (int i = 0; i < foldersToSolution; i++)
+            {
+                regexBase += @"[^\/]*\/";
+            }
+
+            Regex regex = new Regex($@"{regexBase}([^\/]*)");
             if (regex.IsMatch(path))
             {
                 return regex.Match(path).Groups[1].Value;
@@ -174,9 +182,12 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
 
             foreach (var solution in Directory.GetDirectories(ConfigManager.PathToRepository).ToList())
             {
-                XElement solutionFile = XElement.Load($"{solution}{ConfigManager.SolutionFilesPath}\\Other\\Customizations.xml");
+                if (Directory.Exists($"{solution}{ConfigManager.SolutionFilesPath}\\Other\\Customizations.xml"))
+                {
+                    XElement solutionFile = XElement.Load($"{solution}{ConfigManager.SolutionFilesPath}\\Other\\Customizations.xml");
 
-                _connectionReferences.CheckConnectionReferencesInSolution(solution.Split('\\').LastOrDefault(), solutionFile.Descendants("connectionreference").ToList());
+                    _connectionReferences.CheckConnectionReferencesInSolution(solution.Split('\\').LastOrDefault(), solutionFile.Descendants("connectionreference").ToList());
+                }
             }
         }
     }

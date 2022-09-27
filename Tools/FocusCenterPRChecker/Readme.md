@@ -119,7 +119,8 @@ Post solution import, we must follow steps given below.
 | solutionpublisheroptionvalueprefix | Comma separated string (without space) mentioning all allowed option value prefix.                                                                                                                     | For example: 28042,28041                                |
 | solutionpublisherprefix            | Comma separated string (without space) mentioning all allowed publisher prefix.                                                                                                                        | For example: msfc,mssh                                  |
 | solutionpublisheruniquename        | Comma separated string (without space) mentioning all allowed publisher unique prefix.                                                                                                                 | For example: MicrosoftSuccessHub                        |
-| solutionsrepopath                  | Path to solution folders in your repository.                                                                                                                                                           | For example: /Extracted/                                |
+| solutionsrepopath                  | Path to solution folders in your repository. The variable value must start and end with the "/" character. If you solution(s) are in the reposioty root folder, the variable value must be "/".        | For example: /Extracted/                                |
+| solutionfilespath                  | Path to unpacked solution files inside a solution folder. This variable is *optional*. The variable value must start with the "\\" character and not end with the "\\" character.                      | For example: \SolutionPackage\Files                     |
 
 > ![FocusCenterPRChecker-Variables](Images/FocusCenterPRChecker-Variables.png)
 
