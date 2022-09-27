@@ -28,6 +28,7 @@ namespace FocusCenterPRChecker.Managers
         public static bool CheckPublisher => bool.Parse(GetVariableValue("checkpublisher"));
         public static bool CheckSolutionVersion => bool.Parse(GetVariableValue("checksolutionversion"));
         public static bool EnableCommentsToPullRequest => bool.Parse(!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("enablecommentstopullrequest", EnvironmentVariableTarget.Process)) ? Environment.GetEnvironmentVariable("enablecommentstopullrequest", EnvironmentVariableTarget.Process) : "false");
+        public static string SolutionFilesPath => GetVariableValue("solutionfilespath");
         //Set to default if null
 
         //SYSTEM DEFINED ENVIRONMENT VARIABLES
@@ -57,6 +58,11 @@ namespace FocusCenterPRChecker.Managers
 
             if (string.IsNullOrEmpty(variableValue))
             {
+                if (variableName == "solutionfilespath")
+                {
+                    return "";
+                }
+
                 throw new ArgumentNullException(variableName, $"Variable {variableName} doesn't have the value configured. Please refer to the document for further details.");
             }
 

@@ -156,7 +156,7 @@ namespace FocusCenterPRChecker.CheckFieldInFlows
             return new FlowModel
             {
                 FlowName = worflowDataFile.Attribute("Name")?.Value.Trim(), 
-                FlowPath = $"{ConfigManager.PathToRepository}\\{solutionName}\\Workflows\\{jsonFileName}"
+                FlowPath = $"{ConfigManager.PathToRepository}\\{solutionName}{ConfigManager.SolutionFilesPath}\\Workflows\\{jsonFileName}"
             };
 
         }
