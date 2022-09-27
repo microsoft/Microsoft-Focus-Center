@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FocusCenterPRChecker.ConnectionReferenceTool.Models;
+using FocusCenterPRChecker.Managers;
 using Newtonsoft.Json.Linq;
 
 namespace FocusCenterPRChecker.ConnectionReferenceTool
@@ -20,7 +21,7 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
         {
             _solutionPath = folderPath;
 
-            List<string> workflows = Directory.GetFiles($"{folderPath}\\Workflows").ToList();
+            List<string> workflows = Directory.GetFiles($"{folderPath}{ConfigManager.SolutionFilesPath}\\Workflows").ToList();
 
             List<FlowModel> flows = GetFlows(workflows);
 
@@ -41,7 +42,7 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
                 {
                     var jsonFileName = worflowDataFile.Descendants("JsonFileName").FirstOrDefault().Value.Split('/').LastOrDefault();
 
-                    flows.Add(new FlowModel { FlowName = worflowDataFile.Attribute("Name").Value, FlowPath = $"{_solutionPath}\\Workflows\\{jsonFileName}" });
+                    flows.Add(new FlowModel { FlowName = worflowDataFile.Attribute("Name").Value, FlowPath = $"{_solutionPath}{ConfigManager.SolutionFilesPath}\\Workflows\\{jsonFileName}" });
                 }
             }
 

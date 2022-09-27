@@ -78,7 +78,7 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
         //Checks for correct Solution publisher, prefix and option value prefix
         private static bool IsCorrectSolutionPublisher(string solutionPath)
         {
-            XElement solutionFile = XElement.Load($"{solutionPath}\\Other\\Solution.xml");
+            XElement solutionFile = XElement.Load($"{solutionPath}{ConfigManager.SolutionFilesPath}\\Other\\Solution.xml");
             var publisher = solutionFile.Descendants("Publisher").FirstOrDefault();
 
             if (publisher == null)
@@ -119,16 +119,16 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
 
             foreach (var solutionPath in solutionsOfChanges)
             {
-                XElement solutionFile = XElement.Load($"{solutionPath}\\Other\\Solution.xml");
+                XElement solutionFile = XElement.Load($"{solutionPath}{ConfigManager.SolutionFilesPath}\\Other\\Solution.xml");
                 var newVersionString = solutionFile.Descendants("Version").FirstOrDefault().Value;
 
-                string masterSolutionUrl = $"{ConfigManager.AzureDevOpsRepositoryUrl}/items?path={ConfigManager.SolutionsRepoPath}{solutionPath.Split('\\').LastOrDefault()}/Other/Solution.xml&api-version=6.0";
+                string masterSolutionUrl = $"{ConfigManager.AzureDevOpsRepositoryUrl}/items?path={ConfigManager.SolutionsRepoPath}{solutionPath.Split('\\').LastOrDefault()}{ConfigManager.SolutionFilesPath.Replace("\\", "/")}/Other/Solution.xml&api-version=6.0";
 
                 string masterSolutionFileContent = await HttpManager.SendGetRequest(masterSolutionUrl, "text/plain");
 
                 if (masterSolutionFileContent == null)
                 {
-                    return "";
+                    continue;
                 }
 
                 var oldVersionString = XDocument.Parse(masterSolutionFileContent).Root.Descendants("Version").FirstOrDefault().Value;
@@ -166,15 +166,15 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
 
             foreach (var solution in Directory.GetDirectories(ConfigManager.PathToRepository).ToList())
             {
-                if (Directory.Exists($"{solution}\\Workflows"))
+                if (Directory.Exists($"{solution}{ConfigManager.SolutionFilesPath}\\Workflows"))
                 {
-                    Flow.RetrieveConnectionReferences(_connectionReferences, solution);
+                    Flow.RetrieveConnectionReferences(_connectionReferences, $"{solution}");
                 }
             }
 
             foreach (var solution in Directory.GetDirectories(ConfigManager.PathToRepository).ToList())
             {
-                XElement solutionFile = XElement.Load($"{solution}\\Other\\Customizations.xml");
+                XElement solutionFile = XElement.Load($"{solution}{ConfigManager.SolutionFilesPath}\\Other\\Customizations.xml");
 
                 _connectionReferences.CheckConnectionReferencesInSolution(solution.Split('\\').LastOrDefault(), solutionFile.Descendants("connectionreference").ToList());
             }
