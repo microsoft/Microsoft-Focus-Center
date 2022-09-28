@@ -78,24 +78,29 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
         //Checks for correct Solution publisher, prefix and option value prefix
         private static bool IsCorrectSolutionPublisher(string solutionPath)
         {
-            XElement solutionFile = XElement.Load($"{solutionPath}{ConfigManager.SolutionFilesPath}\\Other\\Solution.xml");
-            var publisher = solutionFile.Descendants("Publisher").FirstOrDefault();
-
-            if (publisher == null)
-                return false;
-
-            var uniqueName = publisher.Descendants("UniqueName")?.FirstOrDefault().Value;
-            var prefix = publisher.Descendants("CustomizationPrefix")?.FirstOrDefault().Value;
-            var optionValuePrefix = publisher.Descendants("CustomizationOptionValuePrefix")?.FirstOrDefault().Value;
-
-            if (ConfigManager.SolutionPublisherUniqueName.ToLower().Split(',').Contains(uniqueName.ToLower())
-               && ConfigManager.SolutionPublisherPrefix.ToLower().Split(',').Contains(prefix.ToLower())
-               && ConfigManager.SolutionPublisherOptionValuePrefix.ToLower().Split(',').Contains(optionValuePrefix.ToLower()))
+            if (File.Exists($"{solutionPath}{ConfigManager.SolutionFilesPath}\\Other\\Solution.xml"))
             {
-                return true;
+                XElement solutionFile = XElement.Load($"{solutionPath}{ConfigManager.SolutionFilesPath}\\Other\\Solution.xml");
+                var publisher = solutionFile.Descendants("Publisher").FirstOrDefault();
+
+                if (publisher == null)
+                    return false;
+
+                var uniqueName = publisher.Descendants("UniqueName")?.FirstOrDefault().Value;
+                var prefix = publisher.Descendants("CustomizationPrefix")?.FirstOrDefault().Value;
+                var optionValuePrefix = publisher.Descendants("CustomizationOptionValuePrefix")?.FirstOrDefault().Value;
+
+                if (ConfigManager.SolutionPublisherUniqueName.ToLower().Split(',').Contains(uniqueName.ToLower())
+                   && ConfigManager.SolutionPublisherPrefix.ToLower().Split(',').Contains(prefix.ToLower())
+                   && ConfigManager.SolutionPublisherOptionValuePrefix.ToLower().Split(',').Contains(optionValuePrefix.ToLower()))
+                {
+                    return true;
+                }
+
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         // Extract solution name from the path
@@ -127,28 +132,31 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
 
             foreach (var solutionPath in solutionsOfChanges)
             {
-                XElement solutionFile = XElement.Load($"{solutionPath}{ConfigManager.SolutionFilesPath}\\Other\\Solution.xml");
-                var newVersionString = solutionFile.Descendants("Version").FirstOrDefault().Value;
-
-                string masterSolutionUrl = $"{ConfigManager.AzureDevOpsRepositoryUrl}/items?path={ConfigManager.SolutionsRepoPath}{solutionPath.Split('\\').LastOrDefault()}{ConfigManager.SolutionFilesPath.Replace("\\", "/")}/Other/Solution.xml&api-version=6.0";
-
-                string masterSolutionFileContent = await HttpManager.SendGetRequest(masterSolutionUrl, "text/plain");
-
-                if (masterSolutionFileContent == null)
+                if (File.Exists($"{solutionPath}{ConfigManager.SolutionFilesPath}\\Other\\Solution.xml"))
                 {
-                    continue;
-                }
+                    XElement solutionFile = XElement.Load($"{solutionPath}{ConfigManager.SolutionFilesPath}\\Other\\Solution.xml");
+                    var newVersionString = solutionFile.Descendants("Version").FirstOrDefault().Value;
 
-                var oldVersionString = XDocument.Parse(masterSolutionFileContent).Root.Descendants("Version").FirstOrDefault().Value;
+                    string masterSolutionUrl = $"{ConfigManager.AzureDevOpsRepositoryUrl}/items?path={ConfigManager.SolutionsRepoPath}{solutionPath.Split('\\').LastOrDefault()}{ConfigManager.SolutionFilesPath.Replace("\\", "/")}/Other/Solution.xml&api-version=6.0";
 
-                var newVersion = Version.Parse(newVersionString);
-                var oldVersion = Version.Parse(oldVersionString);
+                    string masterSolutionFileContent = await HttpManager.SendGetRequest(masterSolutionUrl, "text/plain");
 
-                var isCorrectVersion = oldVersion.CompareTo(newVersion) < 0;
+                    if (masterSolutionFileContent == null)
+                    {
+                        continue;
+                    }
 
-                if (!isCorrectVersion)
-                {
-                    solutions.Add(solutionPath.Split('\\').LastOrDefault());
+                    var oldVersionString = XDocument.Parse(masterSolutionFileContent).Root.Descendants("Version").FirstOrDefault().Value;
+
+                    var newVersion = Version.Parse(newVersionString);
+                    var oldVersion = Version.Parse(oldVersionString);
+
+                    var isCorrectVersion = oldVersion.CompareTo(newVersion) < 0;
+
+                    if (!isCorrectVersion)
+                    {
+                        solutions.Add(solutionPath.Split('\\').LastOrDefault());
+                    }
                 }
             }
 
@@ -180,9 +188,11 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
                 }
             }
 
+            // get connection references from customizations xml as well and 
+
             foreach (var solution in Directory.GetDirectories(ConfigManager.PathToRepository).ToList())
             {
-                if (Directory.Exists($"{solution}{ConfigManager.SolutionFilesPath}\\Other\\Customizations.xml"))
+                if (File.Exists($"{solution}{ConfigManager.SolutionFilesPath}\\Other\\Customizations.xml"))
                 {
                     XElement solutionFile = XElement.Load($"{solution}{ConfigManager.SolutionFilesPath}\\Other\\Customizations.xml");
 

@@ -32,6 +32,11 @@ namespace FocusCenterPRChecker.ConnectionReferenceTool
         // set connection refernce IsAdded to true if its present in solution
         public void CheckConnectionReferencesInSolution(string solutionName, List<XElement> connectionReferencesInSolution)
         {
+            foreach (var connectionReference in connectionReferencesInSolution)
+            {
+                AddUsage(connectionReference.Attribute("connectionreferencelogicalname").Value, "", solutionName);
+            }
+
             foreach (var connectionReference in _connectionReferenceModels)
             {
                 bool isPresentInSolution = connectionReferencesInSolution.FirstOrDefault(c => c.Attribute("connectionreferencelogicalname")?.Value == connectionReference.Key) != null;
