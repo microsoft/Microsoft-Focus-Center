@@ -89,6 +89,12 @@ To get the SharePoint List ID go to the created SharePoint List page, click on t
 
 ![SharePoint List ID](media/SharePointListID.png)
 
+### Flow Configuration
+
+If you created **private** SharePoint site, go to "Submit Request" Cloud Flow and update run-only permissions to use service account connection instead of "Provided by run-only user" option.
+
+![SharePoint List ID](media/RunOnlyUsers.png)
+
 ## Troubleshooting
 
 If after completion of all steps above users cannot submit the request, perform the steps below to troubleshoot the issue.
