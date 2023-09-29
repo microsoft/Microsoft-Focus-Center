@@ -1,0 +1,98 @@
+trigger: none
+
+stages:
+- stage: __default
+  jobs:
+  - job: Job_1
+    displayName: Agent job 1
+    pool:
+      name: local
+    steps:
+    - checkout: self
+      persistCredentials: True
+    - task: PowerShell@2
+      displayName: Print variables values
+      inputs:
+        targetType: inline
+        script: >+
+          Write-Host "--------------------------------------------------------------------------"
+
+          Write-Host "Your variable values are:" -ForegroundColor Yellow
+
+          Write-Host "BranchName: $(BranchName)"
+
+          Write-Host "BuildTools.EnvironmentUrl: $(BuildTools.EnvironmentUrl)"
+
+          Write-Host "SolutionName: $(SolutionName)"
+
+          Write-Host "--------------------------------------------------------------------------"
+
+          Write-Host "Example variable values are:" -ForegroundColor Yellow
+
+          Write-Host "BranchName: users/my-alias/task-123456"
+
+          Write-Host "BuildTools.EnvironmentUrl: https://orgname.crm.dynamics.com/"
+
+          Write-Host "SolutionName: SolutionName"
+
+          Write-Host "--------------------------------------------------------------------------"
+
+    - task: PowerShell@2
+      displayName: Create new git branch and clean up target solution folder
+      inputs:
+        targetType: inline
+        script: >-
+          git config user.email "$(Build.RequestedForEmail)"
+
+          git config user.name "$(Build.RequestedFor)"
+
+          git switch -c $(BranchName)
+
+          git branch
+
+          git -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" push -u origin $(BranchName)
+
+          git branch --set-upstream-to=origin/$(BranchName)
+
+          git pull
+    - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.tool-installer.PowerPlatformToolInstaller@2
+      displayName: 'Power Platform Tool Installer '
+      inputs:
+        PowerAppsAdminVersion: 2.0.99
+        XrmToolingPackageDeploymentVersion: 3.3.0.901
+        MicrosoftPowerAppsCheckerVersion: 1.0.29
+        CrmSdkCoreToolsVersion: 9.1.0.64
+    - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.export-solution.PowerPlatformExportSolution@2
+      displayName: Export Unmanaged Solution
+      inputs:
+        PowerPlatformEnvironment: $(PowerPlatformServiceConnectionId)
+        SolutionName: $(SolutionName)
+        SolutionOutputFile: $(Build.ArtifactStagingDirectory)\ExportTarget\$(SolutionName).zip
+    - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.export-solution.PowerPlatformExportSolution@2
+      displayName: Export Managed Solution
+      inputs:
+        PowerPlatformEnvironment: $(PowerPlatformServiceConnectionId)
+        SolutionName: $(SolutionName)
+        SolutionOutputFile: $(Build.ArtifactStagingDirectory)\ExportTarget\$(SolutionName)_managed.zip
+        Managed: true
+    - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.unpack-solution.PowerPlatformUnpackSolution@2
+      displayName: Unpack Solution
+      inputs:
+        SolutionInputFile: $(Build.ArtifactStagingDirectory)\ExportTarget\$(SolutionName).zip
+        SolutionTargetFolder: $(Build.SourcesDirectory)\$(SolutionsFolderPath)\$(SolutionName)
+        SolutionType: Both
+        OverwriteFiles: false
+        ProcessCanvasApps: true
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Solution Artifact
+      condition: succeededOrFailed()
+      inputs:
+        PathtoPublish: $(Build.SourcesDirectory)\$(SolutionsFolderPath)\$(SolutionName)
+        ArtifactName: $(SolutionName)
+        FileCopyOptions: ''
+    - task: PowerShell@2
+      displayName: Commit Changes
+      inputs:
+        targetType: inline
+        script: "git config user.email \"$(Build.RequestedForEmail)\"\ngit config user.name \"$(Build.RequestedFor)\"\n\nWrite-Host \"Getting files to be committed\"\n\n$FilesArray = Get-ChildItem -Path $(Build.SourcesDirectory)\\$(SolutionsFolderPath)\\$(SolutionName) -Recurse -File\n\n$FilesArray \n\nWrite-Host \"Finding files in the $(SolutionName) solution\"\n\nfor ($i=0; $i -lt $FilesArray.length; $i++) {\n    $filePath = $FilesArray[$i].FullName\n\n\n        git add $filePath\n    \n}\n\ngit commit -m \"$(SolutionName) solution changes\"\ngit -c http.extraheader=\"AUTHORIZATION: bearer $(System.AccessToken)\" push -u origin $(BranchName)"
+
