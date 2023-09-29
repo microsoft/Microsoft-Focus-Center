@@ -31,7 +31,7 @@ stages:
 
           Write-Host "BranchName: users/my-alias/task-123456"
 
-          Write-Host "BuildTools.EnvironmentUrl: https://scshubplatdev.crm.dynamics.com/"
+          Write-Host "BuildTools.EnvironmentUrl: https://orgname.crm.dynamics.com/"
 
           Write-Host "SolutionName: SolutionName"
 
